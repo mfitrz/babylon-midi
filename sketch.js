@@ -1,6 +1,10 @@
 //https://editor.p5js.org/howshekilledit/sketches/P00w6cEmL
 let piano_init = false;
 
+let notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+
+let spheres = {};
+
 //default function plays note on keypress
 
 function triggerNote(note, midi = true) {
@@ -16,7 +20,9 @@ function triggerNote(note, midi = true) {
 
     synth.triggerAttack(note.name + note.octave);
 
+    spheres[note.name].position.y = 20;
 
+    spheres[note.name].material = hexMat("#000FFF", scene);
 
     //Show what we are receiving
     console.log(
@@ -32,6 +38,10 @@ function triggerNote(note, midi = true) {
 function stopNote(note) {
     //stop note
     synth.triggerRelease(note.name + note.octave);
+
+    spheres[note.name].position.y = 0;
+
+    spheres[note.name].material = hexMat("#000000", scene);
 
     //Show what we are receiving
     console.log(
@@ -84,7 +94,10 @@ function setup() {
     var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
     light.intensity = 1;
 
-
+    for (let [i, n] of notes.entries()) {
+        spheres[n] = createSphere(i-2*i*5 + 25, 0, -2, 10);
+    }
+    
     synth = new Tone.PolySynth(Tone.MonoSynth, {
         volume: -8,
         oscillator: {
