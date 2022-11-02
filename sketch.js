@@ -5,6 +5,8 @@ let notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
 let spheres = {};
 
+let boxes = {};
+
 //default function plays note on keypress
 
 function triggerNote(note, midi = true) {
@@ -23,6 +25,8 @@ function triggerNote(note, midi = true) {
     spheres[note.name].position.y = 20;
 
     spheres[note.name].material = hexMat("#000FFF", scene);
+
+    boxes[note.name].position.x += 5;
 
     //Show what we are receiving
     console.log(
@@ -96,6 +100,8 @@ function setup() {
 
     for (let [i, n] of notes.entries()) {
         spheres[n] = createSphere(i-2*i*5 + 25, 0, -2, 10);
+        boxes[n] = createBox(-75, 0, i-2*i*4 + 50, 3, 3, 3);
+        boxes[n].material = hexMat("#12300F");
     }
     
     synth = new Tone.PolySynth(Tone.MonoSynth, {
